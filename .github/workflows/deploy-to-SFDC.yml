@@ -7,8 +7,8 @@ jobs:
   deploy:
     environment: PROD
     env:
-        SFDX_JWT_KEY: '${{ secrets.SFDX_JWT_KEY }}'
-        SFDX_CLIENT_ID: '${{ secrets.SFDX_CLIENT_ID }}'
+        SFDX_JWT_KEY: '${{secrets.SFDX_JWT_KEY}}'
+        SFDX_CLIENT_ID: '${{secrets.SFDX_CLIENT_ID}}'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
