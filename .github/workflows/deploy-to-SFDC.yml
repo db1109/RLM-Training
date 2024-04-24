@@ -5,38 +5,31 @@ on:
 name: Deploy dtoffff Salesforce Production
 jobs:
   deploy:
+    environment: Prod
+    env:
+        SFDX_JWT_KEY: '${{ secrets.SFDX_JWT_KEY }}'
+        SFDX_CLIENT_ID: '${{ secrets.SFDX_CLIENT_ID }}'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "npm"
           cache-dependency-path: "./package-lock.json"
-
-
-
       - name: do workaround
         run: rm -rf .git/hooks
-     
-
       - name: Install Dependencies
         if: steps.npm_cache_id.outputs.cache-hit != 'true'
         run: npm install
-
       - name: SFDX Auth
-        env:
-          SFDX_JWT_KEY: '${{ secrets.SFDX_JWT_KEY }}'
-          SFDX_CLIENT_ID: '${{ secrets.SFDX_CLIENT_ID }}'
         run: |
           echo "${SFDX_JWT_KEY}" > server.key
           npx sfdx force:auth:jwt:grant --clientid "${SFDX_CLIENT_ID}" --jwtkeyfile server.key --username dbolton@rlmtraining.com	--setdefaultdevhubusername
           npx sfdx force:org:display --json -u dbolton@rlmtraining.com > sfdx-auth.json
           rm server.key
-
       - name: Build, Test & Deploy
         uses: gfarb/sfdx-deploy@v1
         env:
