@@ -20,7 +20,7 @@ public with sharing class productSelectorController {
                 list<PriceAdjustmentTier> l = [  select id, name, tiertype, tiervalue , 
                     lowerbound, upperbound, product2.name, product2.id  from PriceAdjustmentTier
                     where product2id=:productId];
-                system.debug(l);
+               //system.debug(l);
                 return l;}
     @AuraEnabled
                 public static list<pricebookentry> getPrices(string catalogId, string quoteId){
