@@ -11,9 +11,6 @@ jobs:
         SFDX_CLIENT_ID: '${{ secrets.SFDX_CLIENT_ID }}'
     runs-on: ubuntu-latest
     steps:
-      - name: check varia
-        run: |
-          echo ${{env.SFDX_JWT_KEY}} > server.key
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Node
