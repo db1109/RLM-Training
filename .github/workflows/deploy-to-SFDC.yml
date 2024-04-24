@@ -29,7 +29,7 @@ jobs:
       - name: SFDX Auth 2
         run: ls
       - name: SFDX Auth 3
-        run: sfdx force:auth:jwt:grant --clientid ${{env.SFDX_CLIENT_ID}} --jwtkeyfile server.key --username dbolton@rlmtraining.com	--setdefaultdevhubusername
+        run: sfdx force:auth:jwt:grant --client-id ${{env.SFDX_CLIENT_ID}} --jwt-key-file server.key --username dbolton@rlmtraining.com	--set-default-dev-hub 
       - name: SFDX Auth 4
         run: sfdx force:org:display --json -u dbolton@rlmtraining.com > sfdx-auth.json
       - name: SFDX Auth 5
