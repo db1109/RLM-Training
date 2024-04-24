@@ -19,8 +19,7 @@ jobs:
           node-version: 20
           cache: "npm"
           cache-dependency-path: "./package-lock.json"
-      - name: do workaround
-        run: rm -rf .git/hooks
+
       - name: Install Dependencies
         if: steps.npm_cache_id.outputs.cache-hit != 'true'
         run: npm install
