@@ -5,7 +5,7 @@ on:
 name: Deploy dtoffff Salesforce Production
 jobs:
   deploy:
-    environment: Prod
+    environment: PROD
     env:
         SFDX_JWT_KEY: '${{ secrets.SFDX_JWT_KEY }}'
         SFDX_CLIENT_ID: '${{ secrets.SFDX_CLIENT_ID }}'
@@ -26,7 +26,7 @@ jobs:
         run: npm install
       - name: SFDX Auth
         run: |
-          echo "test" > server.key
+          echo ${env.SFDX_JWT_KEY} > server.key
           npx sfdx force:auth:jwt:grant --clientid 3MVG9_kZcLde7U5pDGNMJreMh.tl2TzyHYJMVL9pjYyB3RPJWVoMp1qojQZMbpqilt7JigsbNq36zEEqsLNQf --jwtkeyfile server.key --username dbolton@rlmtraining.com	--setdefaultdevhubusername
           npx sfdx force:org:display --json -u dbolton@rlmtraining.com > sfdx-auth.json
           rm server.key
