@@ -23,7 +23,7 @@ jobs:
 
       - name: Install Dependencies
         if: steps.npm_cache_id.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm install
 
       - name: SFDX Auth
         env:
