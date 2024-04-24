@@ -44,5 +44,5 @@ jobs:
           TARGET_USERNAME: dbolton@rlmtraining.com	
           SOURCE_PATH: force-app
           DESTRUCTIVE_CHANGES: destructive-changes
-          TEST_LEVEL: ""
+          TEST_LEVEL: NoTestRun
           WAIT: 200
