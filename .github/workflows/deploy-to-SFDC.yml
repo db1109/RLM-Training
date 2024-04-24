@@ -16,15 +16,7 @@ jobs:
           node-version: "20"
           cache: 'npm'
 
-      - name: Cache node modules
-        uses: actions/cache@v3
-        id: npm_cache_id
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-cache-
-            ${{ runner.os }}-
+     
 
       - name: Install Dependencies
         if: steps.npm_cache_id.outputs.cache-hit != 'true'
@@ -37,13 +29,13 @@ jobs:
         run: |
           echo "${SFDX_JWT_KEY}" > server.key
           npx sfdx force:auth:jwt:grant --clientid "${SFDX_CLIENT_ID}" --jwtkeyfile server.key --username dbolton@rlmtraining.com	--setdefaultdevhubusername
-          npx sfdx force:org:display --json -u gfarb@github.dreamforce > sfdx-auth.json
+          npx sfdx force:org:display --json -u dbolton@rlmtraining.com > sfdx-auth.json
           rm server.key
 
       - name: Build, Test & Deploy
         uses: gfarb/sfdx-deploy@v1
         env:
-          TARGET_USERNAME: gfarb@github.dreamforce
+          TARGET_USERNAME: dbolton@rlmtraining.com	
           SOURCE_PATH: force-app
           DESTRUCTIVE_CHANGES: destructive-changes
           TEST_LEVEL: RunLocalTests
