@@ -1,0 +1,125 @@
+<template>
+    <lightning-card>
+        <h3 slot="title"> <lightning-icon icon-name={Icon} size={IconSize}>
+            </lightning-icon>&nbsp;{SectionTitle} </h3>
+        <template if:true={showProducts}>
+            <lightning-tabset>
+                <lightning-tab label="Catalog Table View">
+                    <lightning-datatable key-field="ProductId" onrowselection={getSelectedProduct} max-row-selection=1
+                        data={productList} columns={columns}></lightning-datatable>
+                </lightning-tab>
+                <lightning-tab label="Catalog Card View">
+                    <template for:each={prodListFull} for:item="prod">
+                        <lightning-card key={prod.id}>
+                            <h3 slot="title"> &nbsp; {prod.name} &nbsp;€ {prod.price}</h3>
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="2" padding="around-small">
+                                    <img src={prod.displayUrl} alt={prod.name} width="100" height="100" />
+                                </lightning-layout-item>
+                                <lightning-layout-item size="8" padding="around-small">
+                                    <lightning-formatted-rich-text
+                                        value={prod.description}></lightning-formatted-rich-text>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="2" padding="around-small">
+                                    <lightning-button label="Select Product" data-id={prod.id}
+                                        title="Non-primary action" onclick={selectProductfromCard}
+                                        class="slds-m-left_x-small"></lightning-button>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-card>
+                        <div key={prod.id} class="slds-border_bottom"></div>
+                    </template>
+                </lightning-tab>
+            </lightning-tabset>
+        </template>
+        <template if:true={showConfig}>
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="3" padding="around-small">
+                    <img src={selectProduct.displayUrl} alt={selectProduct.name} width="500" height="500" />
+                </lightning-layout-item>
+                <lightning-layout-item size="2" padding="around-small">
+                    Name : {selectProduct.ProductName} <br />
+                    Description : {selectProduct.Description} <br />
+                    Price : {selectProduct.Price}<br />
+                </lightning-layout-item>
+                <lightning-layout-item size="2" padding="around-small">
+                    <lightning-input type="number" value={selectedQuantity} onchange={handleQuantityChange}  name="input1" label="Quantity"></lightning-input> <br/>
+                </lightning-layout-item>
+                <lightning-layout-item size="5" padding="around-small">
+                    <lightning-tabset>
+                        <lightning-tab label="Attribute Adjustments by Rule">
+                            <template for:each={attributeAdjustmentParentList} for:item="aaParent">
+                                <div key={aaParent.Id}>
+                                    <lightning-card key={aaParent.Id}>
+                                        <h3 slot="title"> &nbsp; {aaParent.RuleName}&nbsp; Type : {aaParent.AdjustmentType} Adjustment : {aaParent.AdjustmentValue}</h3>
+                                            <template lwc:if={aaParent.RuleMet}>  
+                                                <lightning-pill  label="Rule Met" >
+                                                    <lightning-icon icon-name="standard:product" alternative-text="Product"></lightning-icon>
+                                                </lightning-pill> </template>
+                                        <lightning-datatable key-field="Id" onrowselection={getSelectedProduct}
+                                            max-row-selection=0 data={aaParent.Contribs} columns={adjcolumns2}></lightning-datatable>
+                                    </lightning-card> </div>
+                            </template>
+                        </lightning-tab>
+                            <lightning-tab label="Volume Adjustments">
+                                <lightning-datatable key-field="Id" onrowselection={getSelectedProduct} max-row-selection=0
+                                    data={volpriceadjustments} columns={voladjcolumns}></lightning-datatable>
+                            </lightning-tab>
+                            <lightning-tab label="Selected Attributes ">
+                                <lightning-datatable key-field="SelectedAttributePicklistValueId" onrowselection={getSelectedProduct} max-row-selection=0
+                                data={selectedAttributeValues} columns={attributeColumns}></lightning-datatable>
+                            </lightning-tab>
+                            <lightning-tab label="Pricing Info">
+                                <h3>Volume Discounts</h3>
+                                <template for:each={volpriceadjustments} for:item="v">
+                                    <template  key={v.Id} lwc:if={v.CriteriaMet}> 
+                                    <lightning-pill   key={v.Id} label={v.Name}>
+                                        <lightning-icon icon-name="standard:opportunity" alternative-text="Discount"></lightning-icon>
+                                    </lightning-pill>
+                                </template>
+                                </template><br/>
+                                <h3>Attribute Discounts</h3>
+                                <template for:each={attributeAdjustmentParentList} for:item="aaParent">
+                                        <template key={aaParent.Id} lwc:if={aaParent.RuleMet}>
+                                            <lightning-pill  key={aaParent.Id} label={aaParent.RuleName} >
+                                                <lightning-icon icon-name="standard:product" alternative-text="Discount"></lightning-icon>
+                                            </lightning-pill>
+                                                </template>
+                                                </template> <br/>
+                                <template if:true={showPricing}>
+                                    NetUnitPrice = {pricingResultQLI.NetUnitPrice} <br />
+                                    NetTotalPrice = {pricingResultQLI.NetTotalPrice} <br />
+                                    ListPrice = {pricingResultQLI.ListPrice} <br />
+                                    TotalAdjustmentAmount = {pricingResultQLI.TotalAdjustmentAmount} <br />
+                                    Pricing Data Raw: <br />{pricingData}
+                                </template>
+                                </lightning-tab>
+                                </lightning-tabset>
+                </lightning-layout-item>
+            </lightning-layout>
+            <template if:true={showOptions}>
+                <lightning-tabset>
+                    <template for:each={optionGroupList} for:item="optionGroup">
+                        <lightning-tab key={optionGroup.Name} label={optionGroup.Name}>
+                            <lightning-layout multiple-rows >
+                                <lightning-layout-item size="3" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                            <template for:each={optionGroup.options} for:item="option">
+                                <lightning-combobox  style="width:320px;" data-id={option.attributedefinitionID} key={option.optionName} name={option.optionName}
+                                    label={option.optionName} value={option.defaultValue}
+                                    placeholder={option.defaultValue} options={option.picklistoptions}
+                                    onchange={handleOptionChange}>
+                                </lightning-combobox>
+                            </template>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="9" flexibility="auto" padding="horizontal-small" class="slds-text-align_right">
+                                <br/><br/>
+                                <lightning-button class="slds-m-left_x-small" label="Get Prices (API)" title="Non-primary action" onclick={getPrice} ></lightning-button>
+                                <lightning-button label="Go Back" title="Non-primary action" onclick={goBack} class="slds-m-left_x-small"></lightning-button>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-tab></template>
+                </lightning-tabset>
+            </template><br />
+        </template><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    </lightning-card>
+</template>

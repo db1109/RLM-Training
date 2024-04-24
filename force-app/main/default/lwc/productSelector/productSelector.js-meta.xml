@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <description>RLM Product Selector</description>
+    <isExposed>true</isExposed>
+    <masterLabel>RLM Product Selector</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+            <targetConfig targets="lightning__RecordPage">
+                <property name="SectionTitle" type="String" default="Product Selector" label="Section Title"/>
+                <property name="Icon" type="String" default="standard:product" label="Icon Name"/>
+                <property name="IconSize" type="String" default="medium" label="Icon Size"/>
+                <supportedFormFactors>
+                    <supportedFormFactor type="Large" />
+                </supportedFormFactors>
+            </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
