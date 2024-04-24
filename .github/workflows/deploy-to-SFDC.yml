@@ -2,7 +2,7 @@ on:
   push:
     branches:
       - "master"
-name: Deploy to Salesforce Production
+name: Deploy dto Salesforce Production
 jobs:
   deploy:
     runs-on: ubuntu-latest
