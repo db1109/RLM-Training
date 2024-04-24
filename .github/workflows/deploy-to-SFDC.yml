@@ -27,7 +27,7 @@ jobs:
       - name: install echo
         run: npm install --global echo-cli
       - name: SFDX Auth 1
-        run: npm echo-cli ${{env.SFDX_JWT_KEY}} > server.key
+        run: echo ${{env.SFDX_JWT_KEY}} > server.key
       - name: SFDX Auth 2
         run: ls
       - name: SFDX Auth 3
