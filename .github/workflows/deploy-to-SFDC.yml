@@ -23,6 +23,7 @@ jobs:
 
       - name: Install Dependencies
         if: steps.npm_cache_id.outputs.cache-hit != 'true'
+        run: rm -rf .git/hooks
         run: npm install
 
       - name: SFDX Auth
