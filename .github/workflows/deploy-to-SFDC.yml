@@ -25,7 +25,7 @@ jobs:
         if: steps.npm_cache_id.outputs.cache-hit != 'true'
         run: npm install
       - name: SFDX Auth
-        run: |
+        run: 
           echo ${{env.SFDX_JWT_KEY}} > server.key
           npx sfdx force:auth:jwt:grant --clientid 3MVG9_kZcLde7U5pDGNMJreMh.tl2TzyHYJMVL9pjYyB3RPJWVoMp1qojQZMbpqilt7JigsbNq36zEEqsLNQf --jwtkeyfile server.key --username dbolton@rlmtraining.com	--setdefaultdevhubusername
           npx sfdx force:org:display --json -u dbolton@rlmtraining.com > sfdx-auth.json
