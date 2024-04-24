@@ -31,9 +31,9 @@ jobs:
       - name: SFDX Auth 2
         run: ls
       - name: SFDX Auth 3
-        run: npm sfdx force:auth:jwt:grant --clientid 3MVG9_kZcLde7U5pDGNMJreMh.tl2TzyHYJMVL9pjYyB3RPJWVoMp1qojQZMbpqilt7JigsbNq36zEEqsLNQf --jwtkeyfile server.key --username dbolton@rlmtraining.com	--setdefaultdevhubusername
+        run: sfdx force:auth:jwt:grant --clientid 3MVG9_kZcLde7U5pDGNMJreMh.tl2TzyHYJMVL9pjYyB3RPJWVoMp1qojQZMbpqilt7JigsbNq36zEEqsLNQf --jwtkeyfile server.key --username dbolton@rlmtraining.com	--setdefaultdevhubusername
       - name: SFDX Auth 4
-        run: npm sfdx force:org:display --json -u dbolton@rlmtraining.com > sfdx-auth.json
+        run: sfdx force:org:display --json -u dbolton@rlmtraining.com > sfdx-auth.json
       - name: SFDX Auth 5
         run: rm server.key
       - name: Build, Test & Deploy
