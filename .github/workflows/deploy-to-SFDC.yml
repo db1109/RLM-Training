@@ -22,19 +22,17 @@ jobs:
       - name: Install Dependencies
         if: steps.npm_cache_id.outputs.cache-hit != 'true'
         run: npm install
-      - name: install sfdx
+      - name: Install SFDX
         run:  npm install @salesforce/cli --global
-      - name: SFDX Auth 1
+      - name: SFDX Step 1 - write key file locally 
         run: echo "${{env.SFDX_JWT_KEY}}" > server.key
-      - name: SFDX Auth 2
-        run: ls
-      - name: SFDX Auth 3
+      - name: SFDX Step 2 - authenticate
         run: sfdx force:auth:jwt:grant --client-id ${{env.SFDX_CLIENT_ID}} --jwt-key-file server.key --username dbolton@rlmtraining.com	--set-default-dev-hub 
-      - name: SFDX Auth 4
+      - name: SFDX Step 3 - write out login details locally
         run: sfdx force:org:display --json -u dbolton@rlmtraining.com > sfdx-auth.json
-      - name: SFDX Auth 5
+      - name: SFDX Step 4 - remove key file
         run: rm server.key
-      - name: Build, Test & Deploy
+      - name: SFDX Step 5 - Build, Test & Deploy using prebuilt action
         uses: gfarb/sfdx-deploy@v1
         env:
           TARGET_USERNAME: dbolton@rlmtraining.com	
