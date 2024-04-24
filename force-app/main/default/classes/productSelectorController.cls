@@ -1,4 +1,5 @@
 public with sharing class productSelectorController {
+    //controller class for LWC
     @AuraEnabled
             public static ContextDefinition geContextDefinition(string contextDefinitionName){
                 ContextDefinition cd = [SELECT Id, DeveloperName FROM ContextDefinition WHERE DeveloperName=:contextDefinitionName limit 1];
