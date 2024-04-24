@@ -24,9 +24,12 @@ jobs:
       - name: Install Dependencies
         if: steps.npm_cache_id.outputs.cache-hit != 'true'
         run: npm install
+
+      - name: install echo
+        run: npm install --global echo-cli
       - name: SFDX Auth 1
         run: 
-          echo ${{env.SFDX_JWT_KEY}} > server.key
+          echo-cli ${{env.SFDX_JWT_KEY}} > server.key
       - name: SFDX Auth 2
         run: 
           ls
