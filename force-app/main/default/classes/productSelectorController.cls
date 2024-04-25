@@ -1,5 +1,5 @@
 public with sharing class productSelectorController {
-    //controller class for LWC
+    //controller class for LWC TESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTING
     @AuraEnabled
             public static ContextDefinition geContextDefinition(string contextDefinitionName){
                 ContextDefinition cd = [SELECT Id, DeveloperName FROM ContextDefinition WHERE DeveloperName=:contextDefinitionName limit 1];
@@ -20,7 +20,7 @@ public with sharing class productSelectorController {
                 list<PriceAdjustmentTier> l = [  select id, name, tiertype, tiervalue , 
                     lowerbound, upperbound, product2.name, product2.id  from PriceAdjustmentTier
                     where product2id=:productId];
-               //system.debug(l);
+                    //system.debug(l);
                 return l;}
     @AuraEnabled
                 public static list<pricebookentry> getPrices(string catalogId, string quoteId){
